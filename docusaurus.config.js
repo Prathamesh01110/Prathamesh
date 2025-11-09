@@ -71,7 +71,7 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Docusaurus Tailwind',
+        title: 'Prathamesh Jakkula',
         logo: {
           alt: 'Docusaurus Tailwind Shadcn/ui Logo',
           src: 'img/logo.svg'
@@ -81,22 +81,17 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: 'Tutorial'
+            label: 'Document'
           },
           {
             to: '/blog',
             label: 'Blog',
             position: 'left'
           },
-          {
-            to: '/about-me',
-            label: 'About Me',
+         {
+            to: '/projects',
+            label: 'Projects',
             position: 'left'
-          },
-          {
-            label: 'Petstore API',
-            position: 'left',
-            to: '/docs/category/petstore-versioned-api'
           },
           {
             'href': 'https://github.com/namnguyenthanhwork/docusaurus-tailwind-shadcn-template',
@@ -373,7 +368,17 @@ const config = {
           ]
         ]
       }
-    ]
+    ],
+    [
+    '@docusaurus/plugin-content-pages',
+    {
+      id: 'projects',  
+      path: 'projects',
+      routeBasePath: 'projects',
+      include: ['**/*.jsx'], // 👈 Only React components
+    },
+  ],
+    
   ]
 }
 
