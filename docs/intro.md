@@ -34,7 +34,19 @@ git init
 git add .
 git commit -m "Initial commit"
 git push origin main
-```
+````
+
+#### 🔗 Quick repo / git visual tools (one-line usage)
+
+- **GitDiagram** — turn a GitHub repo into an interactive diagram to quickly visualise files & branches. — https://gitdiagram.example.com
+- **GitForMe** — paste a GitHub repo URL and get an AI-powered guided overview to understand the codebase fast. — https://gitforme.example.com
+- **Gitingest** — convert a git repo into a compact text digest (great for feeding LLMs or making quick snapshots). — https://gitingest.example.com
+- **Python Tutor** — visual, step-by-step code execution visualizer for Python/JS/C/C++/Java — use it to trace and debug small examples. — https://pythontutor.com/render.html#mode=edit
+
+
+> These tools are for rapid understanding and visualization — useful when you land on a new repo or want to explain code to others.
+
+---
 
 ### 💻 Terminal & Shell
 
@@ -81,4 +93,3 @@ It’s built with the idea that **knowledge should never be scattered** — and 
 Keep experimenting. Keep building.
 That’s how you turn curiosity into mastery.
 
----

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
 ---
-# AI & ML — Shortcut Resources
+# Shortcut Resources
 
 ### 1️⃣ Overview — The AI → ML → DL → GenAI Hierarchy
 

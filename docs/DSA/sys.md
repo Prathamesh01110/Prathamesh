@@ -1,390 +1,642 @@
 ---
 sidebar_position: 4
 ---
-# Optimization tricks
+# Optimized & Low-Level
+
+A practical guide to writing fast, efficient C++ code with real-world examples.
+
+## 1. Understanding Hexadecimal & Bit Patterns {#hex-and-bits}
+
+### Why use hex in low-level code?
+
+Hex is compact and maps directly to bits. Each hex digit = 4 bits.
+
+```cpp
+// Example: Command dispatching with bit patterns
+switch (command & 0xF000) {  // Mask top 4 bits (top hex digit)
+    case 0x9000:
+        // Commands 0x9000-0x9FFF: Display operations
+        drawMessage(getMessageText(command), screenBuffer);
+        break;
+        
+    case 0xA000:
+    case 0xB000:
+        // Commands 0xA000-0xBFFF: Handler functions
+        return commandTable[command & 0x0FFF]();  // Use bottom 12 bits as index
+        
+    case 0xF000:
+        // Commands 0xF000-0xFFFF: Special system calls
+        handleSystemCall(command);
+        break;
+}
+```
+
+### Breaking down bit patterns
+
+```cpp
+// Let's decode 0xA3F7
+// Binary: 1010 0011 1111 0111
+//         ^^^^ ^^^^ ^^^^ ^^^^
+//          A    3    F    7
+
+uint16_t cmd = 0xA3F7;
+
+// Extract parts using bit masks
+uint8_t category = (cmd & 0xF000) >> 12;  // Top 4 bits → 0xA
+uint8_t subcmd   = (cmd & 0x0F00) >> 8;   // Next 4 bits → 0x3
+uint8_t param    = (cmd & 0x00FF);        // Bottom 8 bits → 0xF7
+
+printf("Category: 0x%X, Subcmd: 0x%X, Param: 0x%X\n", 
+       category, subcmd, param);
+// Output: Category: 0xA, Subcmd: 0x3, Param: 0xF7
+```
+
+### Common bit masks explained
+
+```cpp
+// Isolate specific bits
+uint32_t flags = 0x12345678;
+
+flags & 0xFF;        // Get last byte:  0x78
+flags & 0xFF00;      // Get 2nd byte:   0x5600
+flags & 0xF000;      // Get top nibble: 0x2000
+
+// Set/clear specific bits
+flags |= 0x0001;     // Set bit 0 (turn ON)
+flags &= ~0x0001;    // Clear bit 0 (turn OFF)
+flags ^= 0x0001;     // Toggle bit 0 (flip)
+
+// Check if bit is set
+if (flags & 0x0001) {
+    // Bit 0 is ON
+}
+```
 
 ---
 
-## 1) Fast I/O / minor runtime tuning
+## 2. Header Files & Namespaces Done Right {#headers-namespaces}
 
-**Why:** essential in contests to avoid slow input overhead.
+### Good header structure
+
+**my_utils.hpp:**
+```cpp
+#pragma once  // Simpler than include guards
+
+#include <cstdint>
+#include <string>
+
+// Your project namespace - prevents name collisions
+namespace myproject {
+
+// Constants in anonymous namespace (internal linkage)
+namespace {
+    constexpr int MAX_BUFFER = 1024;
+    constexpr uint32_t MAGIC_NUMBER = 0xDEADBEEF;
+}
+
+// Inline functions can be defined in headers
+inline uint32_t extractCommand(uint32_t fullCmd) {
+    return (fullCmd & 0xF000) >> 12;
+}
+
+// Template functions must be in headers
+template<typename T>
+inline T clamp(T value, T min, T max) {
+    return (value < min) ? min : (value > max) ? max : value;
+}
+
+// Forward declarations for classes
+class MessageHandler;
+class CommandProcessor;
+
+} // namespace myproject
+```
+
+**my_utils.cpp:**
+```cpp
+#include "my_utils.hpp"
+#include <iostream>
+
+namespace myproject {
+
+// Implementation of non-inline functions
+void MessageHandler::process(const std::string& msg) {
+    std::cout << "Processing: " << msg << std::endl;
+}
+
+} // namespace myproject
+```
+
+### Namespace best practices
 
 ```cpp
-#include <bits/stdc++.h>
-using namespace std;
-int main(){
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);            // disable flush on endl
-    cout.setf(std::ios::fixed);
-    cout<<setprecision(6);
+// BAD: Don't pollute global namespace
+using namespace std;  // Never in headers!
+
+// GOOD: Use specific imports in .cpp files
+using std::string;
+using std::vector;
+
+// GOOD: Namespace aliases for long names
+namespace fs = std::filesystem;
+namespace chrono = std::chrono;
+
+// Usage
+fs::path p = "/home/user/file.txt";
+auto now = chrono::steady_clock::now();
+
+// In your code
+namespace mp = myproject;  // Short alias
+mp::MessageHandler handler;
+```
+
+### Real example: Command system
+
+**command_system.hpp:**
+```cpp
+#pragma once
+#include <cstdint>
+#include <functional>
+#include <unordered_map>
+
+namespace game {
+
+enum class CommandType : uint8_t {
+    Display = 0x9,
+    Action  = 0xA,
+    System  = 0xF
+};
+
+class CommandDispatcher {
+public:
+    using Handler = std::function<void(uint16_t)>;
+    
+    void registerHandler(uint16_t pattern, Handler handler);
+    void dispatch(uint16_t command);
+    
+private:
+    std::unordered_map<uint16_t, Handler> handlers;
+    
+    inline CommandType getType(uint16_t cmd) const {
+        return static_cast<CommandType>((cmd & 0xF000) >> 12);
+    }
+};
+
+} // namespace game
+```
+
+---
+
+## 3. Bit Manipulation Tricks {#bit-tricks}
+
+### Essential bit operations
+
+```cpp
+#include <cstdint>
+
+// Check if number is power of 2
+inline bool isPowerOf2(uint32_t n) {
+    return n && !(n & (n - 1));
+}
+
+// Round up to next power of 2
+inline uint32_t nextPowerOf2(uint32_t n) {
+    n--;
+    n |= n >> 1;
+    n |= n >> 2;
+    n |= n >> 4;
+    n |= n >> 8;
+    n |= n >> 16;
+    return n + 1;
+}
+
+// Count set bits (population count)
+inline int countBits(uint32_t n) {
+    return __builtin_popcount(n);  // GCC/Clang builtin
+}
+
+// Find position of lowest set bit
+inline int lowestBitPos(uint32_t n) {
+    return __builtin_ctz(n);  // Count trailing zeros
+}
+
+// Isolate lowest set bit
+inline uint32_t lowestBit(uint32_t n) {
+    return n & -n;  // Magic trick: -n flips all bits after lowest 1
+}
+
+// Example usage
+uint32_t flags = 0b10110100;
+printf("Has %d bits set\n", countBits(flags));  // 4
+printf("Lowest bit at position %d\n", lowestBitPos(flags));  // 2
+printf("Lowest bit value: 0x%X\n", lowestBit(flags));  // 0x4
+```
+
+### Practical example: Permissions system
+
+```cpp
+namespace security {
+
+enum Permission : uint32_t {
+    READ    = 1 << 0,  // 0x0001
+    WRITE   = 1 << 1,  // 0x0002
+    EXECUTE = 1 << 2,  // 0x0004
+    DELETE  = 1 << 3,  // 0x0008
+    ADMIN   = 1 << 4   // 0x0010
+};
+
+class PermissionSet {
+    uint32_t perms = 0;
+    
+public:
+    void grant(Permission p) { perms |= p; }
+    void revoke(Permission p) { perms &= ~p; }
+    bool has(Permission p) const { return perms & p; }
+    
+    // Grant multiple permissions at once
+    void grantMultiple(uint32_t mask) { perms |= mask; }
+    
+    // Check if has ALL of the permissions
+    bool hasAll(uint32_t mask) const { 
+        return (perms & mask) == mask; 
+    }
+    
+    // Check if has ANY of the permissions
+    bool hasAny(uint32_t mask) const { 
+        return (perms & mask) != 0; 
+    }
+};
+
+// Usage
+PermissionSet user;
+user.grant(READ);
+user.grant(WRITE);
+
+if (user.has(WRITE)) {
+    // Allow write operation
+}
+
+// Check multiple
+if (user.hasAll(READ | WRITE)) {
+    // User can read AND write
+}
+
+} // namespace security
+```
+
+---
+
+## 4. Memory & Performance {#memory-performance}
+
+### Fast I/O for competitive programming
+
+```cpp
+// Speed up cin/cout
+void setupFastIO() {
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+}
+
+// Use this at start of main()
+int main() {
+    setupFastIO();
+    
+    int n;
+    std::cin >> n;  // Now much faster
+}
+```
+
+### Memory alignment matters
+
+```cpp
+// CPU reads memory in chunks (cache lines)
+// Aligning data reduces cache misses
+
+// BAD: Straddling cache lines
+struct BadLayout {
+    char a;      // 1 byte
+    int64_t b;   // 8 bytes, but misaligned!
+    char c;      // 1 byte
+}; // Size: ~17 bytes with padding
+
+// GOOD: Aligned layout
+struct GoodLayout {
+    int64_t b;   // 8 bytes, aligned
+    char a;      // 1 byte
+    char c;      // 1 byte
+}; // Size: 16 bytes, better aligned
+
+// Force alignment
+struct alignas(64) CacheLineAligned {
+    int data[16];  // Fits in one cache line
+};
+```
+
+### Avoid allocations in hot loops
+
+```cpp
+// BAD: Allocates every iteration
+void processBad(const std::vector<int>& input) {
+    for (int x : input) {
+        std::vector<int> temp;  // NEW ALLOCATION!
+        temp.push_back(x * 2);
+        // ...
+    }
+}
+
+// GOOD: Reuse buffer
+void processGood(const std::vector<int>& input) {
+    std::vector<int> temp;
+    temp.reserve(100);  // Preallocate
+    
+    for (int x : input) {
+        temp.clear();  // Reuse memory
+        temp.push_back(x * 2);
+        // ...
+    }
+}
+```
+
+---
+
+## 5. Multithreading Explained {#multithreading}
+
+### When to use threads
+
+- **YES:** Independent tasks (file processing, parallel calculations)
+- **NO:** Tasks that need heavy synchronization (defeats the purpose)
+
+### Basic thread example
+
+```cpp
+#include <thread>
+#include <iostream>
+#include <vector>
+
+// Function that runs in separate thread
+void worker(int id, int workAmount) {
+    std::cout << "Thread " << id << " starting\n";
+    
+    // Simulate work
+    int sum = 0;
+    for (int i = 0; i < workAmount; i++) {
+        sum += i;
+    }
+    
+    std::cout << "Thread " << id << " finished: " << sum << "\n";
+}
+
+int main() {
+    const int numThreads = 4;
+    std::vector<std::thread> threads;
+    
+    // Launch threads
+    for (int i = 0; i < numThreads; i++) {
+        threads.emplace_back(worker, i, 1000000);
+    }
+    
+    // Wait for all to complete
+    for (auto& t : threads) {
+        t.join();
+    }
+    
+    std::cout << "All threads completed\n";
+    return 0;
+}
+```
+
+### Thread-safe counter with mutex
+
+```cpp
+#include <thread>
+#include <mutex>
+#include <vector>
+
+class ThreadSafeCounter {
+    int count = 0;
+    std::mutex mtx;  // Protects count
+    
+public:
+    void increment() {
+        std::lock_guard<std::mutex> lock(mtx);  // Auto-locks, auto-unlocks
+        count++;
+    }
+    
+    int get() {
+        std::lock_guard<std::mutex> lock(mtx);
+        return count;
+    }
+};
+
+// Usage
+ThreadSafeCounter counter;
+
+void workerThread(int iterations) {
+    for (int i = 0; i < iterations; i++) {
+        counter.increment();
+    }
+}
+
+int main() {
+    std::vector<std::thread> threads;
+    
+    // 4 threads, each incrementing 10000 times
+    for (int i = 0; i < 4; i++) {
+        threads.emplace_back(workerThread, 10000);
+    }
+    
+    for (auto& t : threads) {
+        t.join();
+    }
+    
+    std::cout << "Final count: " << counter.get() << "\n";  // 40000
+    return 0;
+}
+```
+
+### Using atomics (faster than mutex for simple operations)
+
+```cpp
+#include <atomic>
+#include <thread>
+#include <vector>
+
+std::atomic<int> atomicCounter(0);
+
+void fastWorker(int iterations) {
+    for (int i = 0; i < iterations; i++) {
+        atomicCounter.fetch_add(1, std::memory_order_relaxed);
+        // Much faster than mutex for simple increments
+    }
+}
+
+int main() {
+    std::vector<std::thread> threads;
+    
+    for (int i = 0; i < 4; i++) {
+        threads.emplace_back(fastWorker, 10000);
+    }
+    
+    for (auto& t : threads) {
+        t.join();
+    }
+    
+    std::cout << "Final count: " << atomicCounter.load() << "\n";
+    return 0;
+}
+```
+
+### Parallel array processing
+
+```cpp
+#include <thread>
+#include <vector>
+#include <algorithm>
+
+// Process array chunk in parallel
+void processChunk(std::vector<int>& data, size_t start, size_t end) {
+    for (size_t i = start; i < end; i++) {
+        data[i] = data[i] * data[i];  // Square each element
+    }
+}
+
+void parallelProcess(std::vector<int>& data) {
+    const int numThreads = 4;
+    std::vector<std::thread> threads;
+    size_t chunkSize = data.size() / numThreads;
+    
+    for (int i = 0; i < numThreads; i++) {
+        size_t start = i * chunkSize;
+        size_t end = (i == numThreads - 1) ? data.size() : (i + 1) * chunkSize;
+        threads.emplace_back(processChunk, std::ref(data), start, end);
+    }
+    
+    for (auto& t : threads) {
+        t.join();
+    }
+}
+```
+
+---
+
+## 6. Real-World Optimization Patterns {#optimization-patterns}
+
+### Fast integer operations
+
+```cpp
+// Multiply by power of 2 - use shift
+int multiplyBy8(int x) {
+    return x << 3;  // Faster than x * 8
+}
+
+// Divide by power of 2 - use shift (for positive numbers)
+int divideBy4(int x) {
+    return x >> 2;  // Faster than x / 4
+}
+
+// Check if even/odd
+bool isEven(int x) {
+    return !(x & 1);  // Faster than x % 2 == 0
+}
+
+// Swap without temporary variable
+void swap(int& a, int& b) {
+    a ^= b;
+    b ^= a;
+    a ^= b;
+}
+```
+
+### Avoid expensive operations in loops
+
+```cpp
+// BAD: Recalculating every iteration
+for (int i = 0; i < n; i++) {
+    double result = sqrt(x) * sqrt(y);  // sqrt is slow!
+    // ...
+}
+
+// GOOD: Calculate once
+double sqrtX = sqrt(x);
+double sqrtY = sqrt(y);
+for (int i = 0; i < n; i++) {
+    double result = sqrtX * sqrtY;
     // ...
 }
 ```
 
-**Also:** reserve vectors to avoid reallocation: `v.reserve(n);`
-**Caution:** disabling sync means don't mix `scanf/printf` with `cin/cout`.
-
----
-
-## 2) Compiler flags & inlining hints
-
-**Why:** let the compiler optimize hot code.
-
-* Use `-O2` or `-O3` for speed, `-Ofast` if you accept aggressive UB-ish optimizations.
-* Force inline small functions:
+### Smart use of lookup tables
 
 ```cpp
-inline __attribute__((always_inline)) int add(int a,int b){ return a+b; }
-```
-
-**Caution:** too much `always_inline` can increase binary size, hurting cache.
-
----
-
-## 3) Move semantics & avoid copies
-
-**Why:** avoid expensive copies of big vectors/strings.
-
-```cpp
-vector<int> makeVec(){
-    vector<int> tmp(1000000);
-    // fill
-    return tmp; // RVO / move
-}
-void consume(vector<int>&& v){
-    // take ownership
-}
-int main(){
-    vector<int> v = makeVec();
-    consume(std::move(v)); // v becomes unspecified
-}
-```
-
-**Tip:** pass `const &` unless you need ownership.
-
----
-
-## 4) Small header file hygiene
-
-**Why:** faster compile, fewer ODR issues. Basic header template:
-
-```cpp
-// my_utils.h
-#pragma once
-#include <vector>
-#include <algorithm>
-
-namespace cu {    // project namespace
-    inline int clamp(int x, int lo, int hi){ return min(max(x,lo),hi); }
-}
-```
-
-**Guidelines:** use `#pragma once` (or include guards), keep headers idempotent, prefer inline functions/templates for definitions in headers.
-
----
-
-## 5) Precompiled headers (PCH)
-
-**Why:** reduce rebuild times in big projects. In contests you won't normally use PCH, but good for development setups.
-
----
-
-## 6) Bit tricks (useful & common)
-
-**Why:** ultra-fast small utilities.
-
-```cpp
-int lowest_bit(int x){ return x & -x; }        // isolates lowest set bit
-int turn_off_lowest(int x){ return x & (x-1); } // remove lowest set bit
-int parity(int x){ return __builtin_parity(x); } // 1 if odd count of ones
-int popcnt(int x){ return __builtin_popcount(x); } // count ones
-int clz(int x){ return __builtin_clz(x); }       // leading zeros
-int floor_log2(int x){ return 31 - __builtin_clz(x); }
-long long next_pow2(long long x){ return 1LL<< (64-__builtin_clzll(x-1)); }
-```
-
-**Iterate submasks** of mask `m`:
-
-```cpp
-for(int s=m; s; s=(s-1)&m){
-    // use s
-}
-```
-
-**Caution:** `__builtin_clz(0)` is undefined — check input.
-
----
-
-## 7) Branchless tricks (when branch mispredict costly)
-
-**Example:** conditional assign without branching:
-
-```cpp
-int cond = (a > b);
-int res = cond * a + (1-cond) * b; // but beware multiplication cost
-// Better for simple flags:
-x = (x & ~mask) | (-cond & mask);
-```
-
-**Caution:** rarely faster on modern CPUs; use when hot and measured.
-
----
-
-## 8) Avoiding undefined behavior (UB) — common traps
-
-* **Signed integer overflow** is UB. Use `long long` or unsigned.
-* **Shift by width or more** is UB: `x << 32` if `x` is 32-bit → UB.
-* **Dereferencing invalid iterators/pointers** → crash/UB.
-* **Data races** in threaded code → UB (see concurrency).
-  **Example bug:**
-
-```cpp
-int32_t x = -1;
-int32_t y = x << 1; // shifting negative signed number => UB
-```
-
-Fix: use unsigned or guarantee non-negative.
-
----
-
-## 9) Memory layout & alignment
-
-**Why:** reduce cache misses; pack small structs cleverly.
-
-```cpp
-struct alignas(16) A { int x; long long y; };
-// or pack to reduce memory
-#pragma pack(push,1)
-struct Packed { char a; int b; };
-#pragma pack(pop)
-```
-
-**Caution:** `#pragma pack(1)` can slow access on some architectures.
-
----
-
-## 10) Efficient use of STL (avoid hidden costs)
-
-* Prefer `vector` over `list` for locality.
-* Use `reserve()` before pushes.
-* `emplace_back()` to construct in-place.
-* `unordered_map` has high constant; use `gp_hash_table` (PBDS) in some contests or `vector<int>` if keys small.
-
-```cpp
-vector<int> v; v.reserve(1000);
-v.emplace_back(42);
-```
-
----
-
-## 11) Custom fast hash for unordered_map
-
-**Why:** avoid hacking collisions (CF stress). Simple example:
-
-```cpp
-struct FastHash {
-    size_t operator()(uint64_t x) const noexcept {
-        x += 0x9e3779b97f4a7c15ULL;
-        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
-        x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
-        return x ^ (x >> 31);
-    }
-};
-unordered_map<long long,int,FastHash> mp;
-```
-
----
-
-## 12) Multithreading basics (std::thread)
-
-**Why:** speed-up independent tasks (not typical in CF, but useful for tools). Minimal example:
-
-```cpp
-#include <thread>
-#include <vector>
-#include <iostream>
-
-void worker(int id){
-    // do CPU-bound or I/O task
-    std::cout<<"Worker "<<id<<"\n";
-}
-
-int main(){
-    std::vector<std::thread> ts;
-    for(int i=0;i<4;i++) ts.emplace_back(worker, i);
-    for(auto &t:ts) if(t.joinable()) t.join();
-}
-```
-
-**Caution:** threads share memory — protect shared state.
-
----
-
-## 13) Synchronization primitives
-
-```cpp
-#include <mutex>
-#include <condition_variable>
-std::mutex mu;
-std::condition_variable cv;
-bool ready = false;
-
-void producer(){
-    std::unique_lock<std::mutex> lock(mu);
-    ready = true;
-    cv.notify_one();
-}
-void consumer(){
-    std::unique_lock<std::mutex> lock(mu);
-    cv.wait(lock, []{ return ready; });
-    // proceed
-}
-```
-
-**Tip:** prefer `std::atomic<T>` for simple flags to avoid mutex overhead.
-
----
-
-## 14) Atomics & lock-free basics
-
-```cpp
-#include <atomic>
-std::atomic<int> counter(0);
-void inc(){ counter.fetch_add(1, std::memory_order_relaxed); }
-```
-
-**Caution:** memory ordering is subtle — use `memory_order_seq_cst` by default unless you know what you do.
-
----
-
-## 15) Thread pool sketch (simple)
-
-```cpp
-// minimal conceptual sketch — use libraries in real projects
-#include <thread>
-#include <vector>
-#include <queue>
-#include <functional>
-#include <mutex>
-#include <condition_variable>
-
-class ThreadPool {
-    std::vector<std::thread> workers;
-    std::queue<std::function<void()>> tasks;
-    std::mutex mu;
-    std::condition_variable cv;
-    bool stop=false;
-public:
-    ThreadPool(int n): workers(n){
-        for(auto &t:workers)
-            t = std::thread([this]{ this->run(); });
-    }
-    ~ThreadPool(){ /* join + stop */ }
-    void enqueue(std::function<void()> f){
-        { std::lock_guard<std::mutex> g(mu); tasks.push(f); }
-        cv.notify_one();
-    }
-private:
-    void run(){
-        while(true){
-            std::function<void()> task;
-            { std::unique_lock<std::mutex> lk(mu);
-              cv.wait(lk, [&]{ return stop || !tasks.empty(); });
-              if(stop && tasks.empty()) break;
-              task = std::move(tasks.front()); tasks.pop();
-            }
-            task();
+// Precompute expensive operations
+namespace lookup {
+    constexpr int MAX = 1000;
+    int squares[MAX];
+    
+    void initialize() {
+        for (int i = 0; i < MAX; i++) {
+            squares[i] = i * i;
         }
     }
-};
-```
-
-**Use:** for parallel I/O or preprocessing tasks.
-
----
-
-## 16) Fast integer multiplication modulo large mod (avoid overflow)
-
-**Why:** `a*b%mod` can overflow 64-bit. Use `__int128`.
-
-```cpp
-long long mulmod(long long a, long long b, long long mod){
-    return (long long)((__int128)a*b % mod);
-}
-```
-
----
-
-## 17) Fast powmod & binary exponent
-
-```cpp
-long long modpow(long long a, long long e, long long mod){
-    long long r=1;
-    while(e){
-        if(e&1) r = (__int128)r*a % mod;
-        a = (__int128)a*a % mod;
-        e >>= 1;
+    
+    inline int getSquare(int x) {
+        return (x < MAX) ? squares[x] : x * x;
     }
-    return r;
 }
 ```
 
----
-
-## 18) Bitset & SIMD-ish tricks
-
-* `std::bitset` for dense boolean vectors with fast bit ops.
-* For numeric loops, rely on compiler autovectorization and write simple loops; use `-O3` and check compiler reports.
-
----
-
-## 19) Debugging weird bit bugs
-
-**Example:** comparing signed and unsigned:
+### Profile before optimizing
 
 ```cpp
-int a = -1;
-unsigned int b = 1;
-if(a > b) // a promoted to unsigned => huge value => condition true unexpectedly
+#include <chrono>
+
+// Simple timer class
+class Timer {
+    std::chrono::time_point<std::chrono::high_resolution_clock> start;
+    
+public:
+    Timer() : start(std::chrono::high_resolution_clock::now()) {}
+    
+    double elapsed() {
+        auto end = std::chrono::high_resolution_clock::now();
+        return std::chrono::duration<double>(end - start).count();
+    }
+};
+
+// Usage
+Timer timer;
+expensiveOperation();
+std::cout << "Took " << timer.elapsed() << " seconds\n";
 ```
 
-**Fix:** avoid implicit signed/unsigned mix; cast explicitly.
+---
 
-**Another:** shifting into sign bit:
+## Quick Reference Card
 
-```cpp
-int x = 1 << 31; // UB for 32-bit signed
-```
+### Bit Operations
+- `x & (x-1)` → Remove lowest bit
+- `x & -x` → Isolate lowest bit
+- `x | (x+1)` → Set lowest zero bit
+- `~x & (x+1)` → Isolate lowest zero bit
 
-Use `1u << 31` or `1LL << 31`.
+### Hex Masks
+- `0xF` → 4 bits (1 hex digit)
+- `0xFF` → 8 bits (1 byte)
+- `0xFFFF` → 16 bits (2 bytes)
+- `0xFFFFFFFF` → 32 bits (4 bytes)
+
+### Thread Safety Rules
+1. **Mutex:** Slow but safe for complex operations
+2. **Atomic:** Fast for simple types (int, bool, pointers)
+3. **Lock-free:** Hard to get right, benchmark first
 
 ---
 
-## 20) Useful builtins and extensions
+## Final Tips
 
-* `__builtin_popcount`, `__builtin_clz`, `__builtin_ctz`, `__builtin_expect` (branch hint).
-  Example:
-
-```cpp
-if(__builtin_expect(x==0, 0)) { /* unlikely */ }
-```
-
-**Caution:** compiler-specific; readability cost.
+1. **Measure first, optimize second** - Don't guess where the bottleneck is
+2. **Algorithm > micro-optimization** - O(n log n) with clean code beats O(n²) with bit tricks
+3. **Readable code wins** - Comment your clever bit hacks
+4. **Test threading thoroughly** - Race conditions are evil
 
 ---
-
-## 21) Practical checklist before "micro-optimizing"
-
-1. Profile: measure hot spots.
-2. Algorithmic complexity > micro-optimizations.
-3. Use efficient algorithms/data-structures first, then micro-opt.
-4. Keep code readable: comment non-obvious low-level hacks.
-
----
-
-### Final note — safety and sanity
-
-Low-level hacks and threading can give big speedups but also subtle bugs (UB, data races, portability). Use them when you need them and test thoroughly.
-
----
-

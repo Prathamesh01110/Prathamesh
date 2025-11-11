@@ -33,7 +33,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: 'AI',
+      label: 'AI & ML',
       items: ['AI/learn', 'AI/tools']
     },
     {
@@ -43,8 +43,13 @@ const sidebars = {
     },
     {
       type: 'category',
-      label:'System Design',
-      items:['system-design/resources']
+      label:'Sys Design & Appti',
+      items:['system-design/resources','system-design/apptitude']
+    },
+    {
+      type: 'category',
+      label:'Cyber-Security',
+      items:['cybersecurity/intro']
     }
   ],
 
