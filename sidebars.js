@@ -34,7 +34,17 @@ const sidebars = {
     {
       type: 'category',
       label: 'AI',
-      items: ['AI/learn', 'AI/tools', 'AI/cp']
+      items: ['AI/learn', 'AI/tools']
+    },
+    {
+      type: 'category',
+      label:'DSA',
+      items:['DSA/resource','DSA/basic','DSA/inter','DSA/sys']
+    },
+    {
+      type: 'category',
+      label:'System Design',
+      items:['system-design/resources']
     }
   ],
 

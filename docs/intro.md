@@ -2,46 +2,83 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Documentation Intro
 
-Let's discover **Docusaurus in less than 5 minutes**.
+This documentation is a **starting point** — for anyone who wants to begin their development journey and doesn’t know where to start.
 
-## Getting Started
+It’s a collection of everything I’ve learned and used over time — the tools, setups, ideas, and habits that shaped how I work today.
 
-Get started by **creating a new site**.
+The goal is simple: to keep things clear, modern, and easy to revisit whenever needed.
+Each section is written to help understand the *why* behind what we use — not just *how* to use it.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+It’s not about being perfect, it’s about improving step by step — exploring new things, learning from mistakes, and enjoying the process of building.
 
-### What you'll need
+---
 
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+> 🧭 Give your effort, stay curious, and keep learning.
+> The more you build, the more everything starts to make sense.
+---
 
-## Generate a new site
+## ⚙️ Basic Developer Practices
 
-Generate a new Docusaurus site using the **classic template**.
+Before diving deep, understand the foundations that keep every developer grounded:
 
-The classic template will automatically be added to your project after you run the command:
+### 🧩 Version Control
 
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
+* Learn **Git** — commits, branches, merges, and pull requests.
+* Use **GitHub** to store your code and track progress publicly.
+* Keep your repos clean, documented, and backed up.
 
 ```bash
-cd my-website
-npm run start
+git init
+git add .
+git commit -m "Initial commit"
+git push origin main
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+### 💻 Terminal & Shell
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+* Get comfortable with **Bash** or **Zsh** — your real dev environment.
+* Customize your shell with aliases, prompt themes, and productivity scripts.
+* Master commands like `cd`, `ls`, `grep`, and `cat` — small tools, big time-savers.
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+---
+
+## 🧭 What’s Inside This Documentation
+
+| Section                 | Summary                                                   |
+| ----------------------- | --------------------------------------------------------- |
+| 🧩 **Mint-OS**          | Linux customization, setup, and personal dev environment. |
+| ⚛️ **Next.js Shortcut** | Best libraries, tips, and modern web dev shortcuts.       |
+| 🤖 **AI & ML**          | Learning roadmap, tools, offline model setup, and tips.   |
+| 🧠 **DSA**              | C++ fundamentals, resources, and algorithm shortcuts.     |
+| 🏗️ **System Design**   | Real-world architectures, concepts, and interview prep.   |
+| 🕵️‍♂️ **Hacking**      | Ethical hacking tools, labs, and cybersecurity practice.  |
+
+Each section focuses on **modern developer understanding** — not theory dumps.
+They’re meant for quick access, clean recall, and practical growth.
+
+---
+
+## 🌱 Building the Right Mindset
+
+This field isn’t about memorizing — it’s about **building**, **breaking**, and **fixing**.
+
+> Choose your **interest**, explore it deeply.
+> If it clicks — go all in.
+> If not — explore other domains until you find your space.
+
+Every project, command, or bug you fix adds to your foundation.
+Consistency will always beat talent.
+
+---
+
+## 💬 Final Note
+
+This documentation is a living guide — it evolves as I learn more.
+It’s built with the idea that **knowledge should never be scattered** — and every developer should have a place that feels like *home base*.
+
+Keep experimenting. Keep building.
+That’s how you turn curiosity into mastery.
+
+---
