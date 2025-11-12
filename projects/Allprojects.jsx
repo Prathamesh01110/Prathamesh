@@ -122,8 +122,18 @@ const projects = [
   }
 ];
 
-export default function Allprojetcts() {
-  const { colorMode } = useColorMode();
+export default function Allprojects() {
+  // const { colorMode } = useColorMode();
+    let colorMode = "light";
+
+  if (typeof window !== "undefined") {
+    try {
+      const theme = require("@docusaurus/theme-common");
+      colorMode = theme.useColorMode().colorMode;
+    } catch (err) {
+      console.warn("Color mode unavailable during SSR, defaulting to light");
+    }
+  }
 
   return (
       <div className={clsx(

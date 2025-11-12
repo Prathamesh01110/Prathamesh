@@ -7,8 +7,8 @@ export default function Home({ homePageBlogMetadata, recentPosts }) {
 
   return (
     <Layout
-      title={`${siteConfig.title}`}
-      description='Description will go into a meta tag in <head />'
+      title='Prathamesh Jakkula'
+      description='Serves as Both a Portfolio website & Documentation for starting point'
     >
       <Personal/>
     </Layout>

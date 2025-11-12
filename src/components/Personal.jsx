@@ -92,30 +92,49 @@ export default function Personal() {
       image: '/img/image1.jpeg'
     },
     { 
+      icon: Award, 
+      title: 'CSI Webcade Hackathon', 
+      subtitle: 'Winner',
+      desc: 'Won among 50+ competing teams',
+      link: 'https://linkedin.com/posts/your-webcade-post',
+      color: 'from-purple-400 to-pink-500',
+      image: '/img/image33.png'
+    },
+    { 
+    icon: Star, 
+    title: 'Standard Presentation Competition', 
+    subtitle: '3rd Place',
+    desc: 'Secured 3rd place while showcasing strategic and communication skills.',
+    link: 'https://www.linkedin.com/feed/update/urn:li:activity:7311664921451098112/',
+    color: 'from-blue-400 to-indigo-500',
+    image: '/img/image6.jpeg'
+  },
+  { 
       icon: Rocket, 
       title: 'E-Cell IIT Bombay', 
       subtitle: 'Entrepreneurship Challenge',
       desc: 'Semifinalist - Top 150 out of 25,000+ teams',
       link: 'https://linkedin.com/posts/your-ecell-post',
-      color: 'from-blue-400 to-indigo-500',
+      color: 'from-green-400 to-teal-500',
       image: '/img/image22.jpeg'
     },
-    { 
-      icon: Award, 
-      title: 'CSI Webcade Hackathon', 
-      subtitle: 'Winner',
-      desc: 'First place among 50+ competing teams',
-      link: 'https://linkedin.com/posts/your-webcade-post',
-      color: 'from-purple-400 to-pink-500',
-      image: '/img/image33.png'
-    },
+  { 
+    icon: Zap, 
+    title: 'Hackanova Thakur 30-hour Hackathon', 
+    subtitle: 'Finalist',
+    desc: 'Advanced through all rounds to reach the finals in a 30-hour hackathon challenge.',
+    link: 'https://www.linkedin.com/feed/update/urn:li:activity:7311664921451098112/',
+    color: 'from-pink-400 to-rose-5000',
+    image: '/img/image61.jpeg'
+  },
+    
     { 
       icon: Code, 
       title: 'GeeksforGeeks', 
       subtitle: 'College Leaderboard',
       desc: 'Top 10 ranking among 280 students (SJCEM)',
       link: 'https://linkedin.com/posts/your-gfg-post',
-      color: 'from-green-400 to-emerald-500',
+      color: 'from-orange-400 to-amber-500',
       image: '/img/image5.png'
     }
   ];
