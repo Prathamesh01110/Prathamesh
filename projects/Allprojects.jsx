@@ -17,7 +17,7 @@ const projects = [
     date: "15/10/2024",
     readTime: "4 min read",
     githubUrl: "https://github.com/yourusername/cyber-ai",
-    liveUrl: "https://cyber-ai-demo.vercel.app",
+    liveUrl: "#",
     featured: true,
     stats: {
       latency: "<1 sec",
@@ -36,7 +36,7 @@ const projects = [
     date: "22/09/2024",
     readTime: "3 min read",
     githubUrl: "https://github.com/yourusername/envi-ai",
-    liveUrl: "https://envi-ai.vercel.app",
+    liveUrl: "#",
     featured: true,
     stats: {
       languages: "30+",
@@ -55,7 +55,7 @@ const projects = [
     date: "10/08/2024",
     readTime: "5 min read",
     githubUrl: "https://github.com/yourusername/socially",
-    liveUrl: "https://socially-app.vercel.app",
+    liveUrl: "#",
     featured: false,
     stats: {
       dataPoints: "1k+",
@@ -74,7 +74,7 @@ const projects = [
     date: "28/07/2024",
     readTime: "3 min read",
     githubUrl: "https://github.com/yourusername/quizza",
-    liveUrl: "https://quizza-app.com",
+    liveUrl: "#",
     featured: false,
     stats: {
       concurrentUsers: "500+",
@@ -93,7 +93,7 @@ const projects = [
     date: "15/06/2024",
     readTime: "6 min read",
     githubUrl: "https://github.com/yourusername/erpx",
-    liveUrl: "https://erpx-studio.vercel.app",
+    liveUrl: "#",
     featured: true,
     stats: {
       satisfaction: "95%+",
@@ -112,15 +112,71 @@ const projects = [
     date: "05/11/2024",
     readTime: "4 min read",
     githubUrl: "https://github.com/yourusername/healthtrack",
-    liveUrl: "https://healthtrack-ai.vercel.app",
+    liveUrl: "#",
     featured: false,
     stats: {
       predictions: "10k+",
       accuracy: "92%",
       responseTime: "<2s"
     }
+  },
+  {
+    id: 7,
+    title: "Real-Time Chat App",
+    description: "A real-time chat application that enables users to communicate instantly over the internet using WebSocket and Firebase for live message delivery.",
+    image: "/img/projects/chat-app.jpg",
+    technologies: ["React", "Firebase", "Node.js", "WebSocket"],
+    category: "Communication",
+    status: "Completed",
+    date: "02/05/2024",
+    readTime: "3 min read",
+    githubUrl: "https://github.com/Prathamesh01110/Realtime-Chat-APP",
+    liveUrl: "#",
+    featured: false,
+    stats: {
+      latency: "Real-time",
+      users: "100+ active",
+      messages: "1k+ daily"
+    }
+  },
+  {
+    id: 8,
+    title: "BERT Fine-Tuning — Toxic Comment Classifier",
+    description: "Fine-tuned BERT model to classify text as toxic or non-toxic using advanced NLP preprocessing and supervised fine-tuning techniques.",
+    image: "/img/projects/bert-finetune.jpg",
+    technologies: ["Python", "Transformers", "PyTorch", "BERT", "NLP"],
+    category: "AI/ML",
+    status: "Completed",
+    date: "25/08/2024",
+    readTime: "5 min read",
+    githubUrl: "https://github.com/Prathamesh01110/Bert-Finetuning",
+    featured: false,
+    stats: {
+      accuracy: "94%",
+      dataset: "Jigsaw Toxic Comment",
+      model: "bert-base-uncased"
+    }
+  },
+  {
+    id: 9,
+    title: "India Post BRSR Platform (SIH1754)",
+    description: "A digital Business Responsibility and Sustainability Reporting (BRSR) platform built for the Department of Posts (India Post). Enables transparency, social accountability, and sustainable business practices across the India Post network.",
+    image: "/img/projects/indiapost-brsr.jpg",
+    technologies: ["Next.js", "Firebase", "Flutter", "Node.js", "Tailwind"],
+    category: "Web + App",
+    status: "Completed",
+    date: "30/09/2024",
+    readTime: "6 min read",
+    githubUrl: "https://github.com/Prathamesh01110/web-SIH1754",
+    featured: true,
+    stats: {
+      platforms: "Web + Mobile",
+      org: "India Post",
+      impact: "Supports nationwide sustainability tracking"
+    }
   }
 ];
+
 
 export default function Allprojects() {
   // const { colorMode } = useColorMode();

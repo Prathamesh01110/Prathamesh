@@ -66,19 +66,12 @@ export default function Personal() {
       gradient: 'from-green-500 to-emerald-500'
     },
     {
-      title: 'Socially',
-      desc: 'AI-powered social media analytics with real-time engagement tracking',
-      tech: ['Next.js', 'Astra DB', 'Langflow', 'ML'],
-      highlight: '1k+ data points • 90%+ accuracy',
+      title: 'ERPX Studio"',
+      desc: 'AI-powered ERP platform for small businesses with automated workflow management and predictive analytics.',
+      tech: ["Next.js", "AWS", "Prisma", "Python", "ML"],
+      highlight: 'Satisfaction Rate 95%+ , Automation of 80% task, performance Boost 30%',
       gradient: 'from-purple-500 to-pink-500'
     },
-    {
-      title: 'QuizzA',
-      desc: 'AI quiz generator transforming PDFs into interactive learning experiences',
-      tech: ['Flutter', 'Firebase', 'NLP', 'PDF Processing'],
-      highlight: '500+ concurrent users',
-      gradient: 'from-orange-500 to-red-500'
-    }
   ];
 
   const achievements = [
