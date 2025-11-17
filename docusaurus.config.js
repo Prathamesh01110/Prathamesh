@@ -8,8 +8,8 @@
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Docusaurus Tailwind Shadcn/ui',
-  tagline: 'Templates Docusaurus with Tailwind CSS and Shadcn/ui',
+  title: 'Serves as Both a Portfolio website & Documentation for starting point',
+  tagline: 'Serves as Both a Portfolio website & Documentation for starting point',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
