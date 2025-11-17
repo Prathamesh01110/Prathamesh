@@ -20,8 +20,8 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'namnguyenthanhwork', // Usually your GitHub org/user name.
-  projectName: 'docusaurus-tailwind-shadcn-template', // Usually your repo name.
+  organizationName: 'Prathamesh Jakkula', // Usually your GitHub org/user name.
+  projectName: 'Prathamesh', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   markdown: {
@@ -91,6 +91,11 @@ const config = {
          {
             to: '/projects',
             label: 'Projects',
+            position: 'left'
+          },
+          {
+            to: '/resume',
+            label: 'Resume',
             position: 'left'
           },
           {
@@ -375,7 +380,16 @@ const config = {
       id: 'projects',  
       path: 'projects',
       routeBasePath: 'projects',
-      include: ['**/*.jsx'], // 👈 Only React components
+      include: ['**/*.jsx'], 
+    },
+  ],
+  [
+    '@docusaurus/plugin-content-pages',
+    {
+      id: 'resume',  
+      path: 'resume',
+      routeBasePath: 'resume',
+      include: ['**/*.jsx'], 
     },
   ],
     

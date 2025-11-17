@@ -19,6 +19,33 @@ It’s not about being perfect, it’s about improving step by step — explorin
 > The more you build, the more everything starts to make sense.
 ---
 
+---
+
+## 📄 Resume, Tracking & Tools
+
+:::info Check My Resume
+My resume consistently scores **90+** on popular resume checkers —  
+you can view or download it here:
+
+👉 **[Open My Resume]( /resume )**
+:::
+
+:::tip Build Your Own Resume (Overleaf Template)
+If you want to create a clean, modern developer resume,  
+use this Overleaf template — simple, professional, and ATS-friendly:
+
+🔗 **Overleaf Template:** https://www.overleaf.com  
+:::
+
+:::warning Track Your Learning & Project Progress  
+I maintain all tasks, learning goals, and project pipelines on Trello —  
+you can explore the workflow structure here:
+
+📌 **Trello Board:** https://trello.com  
+:::
+
+---
+
 ## ⚙️ Basic Developer Practices
 
 Before diving deep, understand the foundations that keep every developer grounded:
