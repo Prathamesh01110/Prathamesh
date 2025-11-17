@@ -99,7 +99,7 @@ const config = {
             position: 'left'
           },
           {
-            'href': 'https://github.com/namnguyenthanhwork/docusaurus-tailwind-shadcn-template',
+            'href': 'https://github.com/Prathamesh01110',
             'position': 'right',
             'className': 'header-github-link',
             'aria-label': 'GitHub repository'
