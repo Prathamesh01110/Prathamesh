@@ -331,7 +331,7 @@ export default function Personal() {
         
         {/* Image container */}
         <div className={clsx(
-          "relative w-full h-full rounded-full overflow-hidden shadow-2xl border-2 sm:border-4 group",
+          "relative w-full h-full rounded-full overflow-hidden shadow-2xl lg:mt-12 md:mt-12 border-2 sm:border-4 group",
           colorMode === 'dark' 
             ? "border-white/20 hover:border-white/40" 
             : "border-blue-200 hover:border-blue-400"
@@ -389,14 +389,20 @@ export default function Personal() {
       <span className={clsx("font-semibold",colorMode === 'dark' ? "text-blue-400" : "text-blue-600")}> E-Cell IIT Bombay Semifinalist</span> • 
       <span className={clsx("font-semibold",colorMode === 'dark' ? "text-green-400" : "text-green-600")}> CSI Webcade Winner</span>
     </p>
+
     
-    <p className={clsx(
-      "text-xs sm:text-sm md:text-base max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-4",
-      colorMode === 'dark' ? "text-slate-400" : "text-gray-500"
-    )}>
-      Building intelligent solutions at the intersection of AI and full-stack development. 
-      Passionate about creating real-world impact through innovative technology.
-    </p>
+    
+  <p className={clsx(
+  "text-xs sm:text-sm md:text-base max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 px-4",
+  colorMode === 'dark' ? "text-slate-400" : "text-gray-500"
+)}>
+  Building intelligent solutions at the intersection of AI and full-stack development. 
+  Passionate about creating real-world impact through innovative technology. 
+  <span className={clsx("ml-1 font-medium", colorMode === 'dark' ? "text-blue-300" : "text-blue-700")}>
+    — Representing SJCEM
+  </span>
+</p>
+
     
     <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center mb-12 sm:mb-16 px-4">
       <a href="https://github.com/Prathamesh01110" target="_blank" rel="noopener noreferrer" 
@@ -1179,6 +1185,7 @@ export default function Personal() {
                 </p>
               </div>
             </div>
+           
 
             {/* Footer index */}
             <div
@@ -1197,8 +1204,6 @@ export default function Personal() {
     </div>
   </div>
 </section>
-
-
 
       {/* Footer */}
 <footer className={clsx(
@@ -1225,6 +1230,32 @@ export default function Personal() {
       <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
       <span>Contact Me</span>
     </a>
+<div className="w-full flex justify-center items-center mt-4">
+  <a
+    href="https://www.buymeacoffee.com/prathameshu"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      !h-[60px] !w-[217px]
+      flex items-center justify-center gap-2
+      rounded-xl font-semibold text-base
+      transition-all duration-300
+      bg-yellow-400 hover:bg-yellow-300
+      dark:bg-yellow-500 dark:hover:bg-yellow-400
+      text-black
+      shadow-md hover:shadow-lg
+      hover:scale-[1.03]
+    "
+  >
+    🤖 Fund My AI Project
+  </a>
+</div>
+
+   
+
+ 
+ 
+
     
     <div className={clsx(
       "mt-8 sm:mt-10 flex justify-center gap-4 sm:gap-6",
@@ -1249,6 +1280,6 @@ export default function Personal() {
     </p>
   </div>
 </footer>
-    </div>
+   </div>
   );
 }

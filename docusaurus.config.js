@@ -155,7 +155,8 @@ const config = {
             ]
           }
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Docusaurus Tailwind Shadcn. Templates by <a href="https://github.com/namnguyenthanhwork" style="font-weight: bold;" target="_blank">Thành Nam Nguyễn</a>`
+copyright: `© ${new Date().getFullYear()} <a href="https://github.com/prathamesh01110" target="_blank">Prathamesh Jakkula</a> • Template by <a href="https://github.com/namnguyenthanhwork" target="_blank">Thành Nam Nguyễn</a>`
+
       },
       prism: {
         additionalLanguages: [

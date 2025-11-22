@@ -43,7 +43,7 @@ const sidebars = {
     },
     {
       type: 'category',
-      label:'Sys Design & Appti',
+      label:'Sys Design & Apti',
       items:['system-design/resources','system-design/apptitude']
     },
     {
