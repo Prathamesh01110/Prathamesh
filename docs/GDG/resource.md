@@ -15,8 +15,6 @@ Many students don’t know **where to start**, **what to learn**, or **which res
 A world-class, beginner-friendly ML course with exercises, videos, and Colab notebooks.
 🔗 [https://developers.google.com/machine-learning/crash-course](https://developers.google.com/machine-learning/crash-course)
 
-Here’s the **updated point** exactly as you asked — replacing **Google Cloud Skills Boost** with **Google Labs (labs.google)** in your session tree or cheat-sheet.
-
 ### **2. Google Labs – Experimental AI Projects by Google**
 
 AI experiments, prototypes, research demos, and cutting-edge tools from Google. (*new AI breakthroughs*) 🔗 [https://labs.google/](https://labs.google/)
