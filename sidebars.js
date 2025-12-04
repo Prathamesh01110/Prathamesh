@@ -50,6 +50,11 @@ const sidebars = {
       type: 'category',
       label:'Cyber-Security',
       items:['cybersecurity/intro']
+    },
+    {
+      type: 'category',
+      label:'GDG',
+      items:['GDG/resource','GDG/Project']
     }
   ],
 
